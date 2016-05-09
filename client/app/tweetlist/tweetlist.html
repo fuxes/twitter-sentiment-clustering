@@ -1,0 +1,48 @@
+<div id="main" role="main">
+  <div id="vis"></div>
+</div>
+
+<div ui-view></div>
+
+<div ng-hide="vm.activeTerm">
+  <h3>Pick a bubble!</h3>
+</div>
+
+<div ng-cloak ng-show="vm.activeTerm">
+  <h3 id="status">
+    A sampling of mentions of
+    <span class="active" ng-bind="vm.activeTerm"></span>
+    in twitter
+  </h3>
+  <div class="timeline-viewport">
+    <div class="timeline-tweetlist">
+      <div class="timeline-tweetlist-tweet"
+                    ng-repeat="tweetId in vm.tweetsIds"
+                    ng-init="tweet = vm.tweets[tweetId]">
+        <div class="timeline-tweet sentiment" ng-class="tweet.sentiment === 'positive' ? 'positive' : 'negative'">
+          <div class="tweet-author">
+            <div class="tweetauthor"
+                          ng-init="user = tweet.user">
+              <a href="" class="tweetauthor-link">
+                <span class="tweetauthor-avatar">
+                  <img class="avatar" ng-src="{{user.profile_image_url}}"
+                                err-src="https://abs.twimg.com/sticky/default_profile_images/default_profile_6_normal.png"></span>
+                <span class="tweetauthor-name" ng-bind="user.name"></span>
+                <span class="tweetauthor-screenname">
+                  @
+                  <span ng-bind="user.screen_name"></span>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <p class="tweet-text" ng-bind-html="tweet.text | highlight:vm.activeTerm"></p>
+
+          <div class="tweet-metadata">
+            <a href="" class="tweet-timestamp" ng-bind="tweet.created_at | timestamp | date:'medium'"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,5 +2,8 @@
 **/*.txt
 **/*.csv
 
+
 **/*.pyc
 .DS_Store
+
+**/*.tar.gz

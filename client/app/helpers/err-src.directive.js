@@ -3,7 +3,7 @@
 
   angular
     .module('bubbleApp.helpers')
-    .directive('errSrcDirective', errSrcDirective);
+    .directive('errSrc', errSrcDirective);
 
   function errSrcDirective() {
     return {

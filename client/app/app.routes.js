@@ -11,11 +11,11 @@
   ];
 
   function bubbleAppRoutes($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
       .state('home', {
-      url: '/home',
+      url: '/',
       controller: 'TweetListCtrl as vm',
       templateUrl: 'app/tweetlist/tweetlist.html'
     });

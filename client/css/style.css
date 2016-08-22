@@ -1,3 +1,9 @@
+@font-face {
+  name: 'Raleway';
+  src: url('raleway/Raleway-regular.ttf');
+  font-weight: normal;
+}
+
 body {
   font-family: 'Raleway', Helvetica, Arial, sans-serif;
 }
@@ -16,8 +22,8 @@ ul, li {
 #container {
   padding-top:20px;
   width: 980px;
-  border-left: 2px #ddd solid;
-  border-right: 2px #ddd solid;
+  // border-left: 2px #ddd solid;
+  // border-right: 2px #ddd solid;
 }
 
 header {
@@ -63,9 +69,11 @@ header {
 
 .bubble-node.positive {
   fill: #DCE9BE;
+  // fill: #3b94d9;
 }
 
 .bubble-node.negative {
+  // fill: #3b94d9;
   fill: #f9caca;
 }
 
@@ -78,8 +86,8 @@ header {
 }
 
 .bubble-hover {
-  fill: #b8c7d9;
-  /*fill: #E8E9E7;*/
+  // fill: #b8c7d9;
+  fill: #E8E9E7;
 }
 
 .bubble-selected.negative {
@@ -201,20 +209,21 @@ img {
   direction: ltr;
   margin-left: 40px;
   margin-bottom: 12px;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 400;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
 .tweet-metadata {
-  float: right;
-  margin-top: 2px;
+  display: block;
+  margin-bottom: 25px
 }
 
 .tweet-timestamp {
   font-size: 12px;
-  color: #e1e8ed;
+  color: #474A4C;
+  float:right;
 }
 
 .tweet-actions {
@@ -236,6 +245,7 @@ img {
 }
 
 .sentiment.positive {
+  // border-left-color: #3b94d9;
   border-left-color: #4CAF50;
 }
 

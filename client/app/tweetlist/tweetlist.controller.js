@@ -15,6 +15,7 @@
     var vm = this;
     vm.tweetsIds = [];
     vm.activeTerm = false;
+    vm.activeCluster =0;
 
     Bubbles.onBubbleClick(onBubbleClick);
 

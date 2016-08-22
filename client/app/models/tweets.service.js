@@ -16,7 +16,7 @@
 
     function get() {
       // hardcoded local folder
-      return $http.get('tweets_sent.json').then(function(response) {
+      return $http.get('data/tweets.json').then(function(response) {
         return response.data;
       });
     }

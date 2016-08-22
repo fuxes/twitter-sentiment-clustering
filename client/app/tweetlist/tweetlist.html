@@ -1,4 +1,15 @@
-<div id="main" role="main">
+<select class="form-control" id="text-select">
+  <option selected value="0">Cluster 1</option>
+  <option value="1">Cluster 2</option>
+  <option value="2">Cluster 3</option>
+  <option value="3">Cluster 4</option>
+  <option value="4">Cluster 5</option>
+  <option value="5">Cluster 6</option>
+  <option value="6">Cluster 7</option>
+  <option value="7">Cluster 8</option>
+</select>
+
+<div id="main" role="main" style="display: inline-block;">
   <div id="vis"></div>
 </div>
 
@@ -17,7 +28,7 @@
   <div class="timeline-viewport">
     <div class="timeline-tweetlist">
       <div class="timeline-tweetlist-tweet"
-                    ng-repeat="tweetId in vm.tweetsIds"
+                    ng-repeat="tweetId in vm.tweetsIds | limitTo:100"
                     ng-init="tweet = vm.tweets[tweetId]">
         <div class="timeline-tweet sentiment" ng-class="tweet.sentiment === 'positive' ? 'positive' : 'negative'">
           <div class="tweet-author">
@@ -25,8 +36,9 @@
                           ng-init="user = tweet.user">
               <a href="" class="tweetauthor-link">
                 <span class="tweetauthor-avatar">
-                  <img class="avatar" ng-src="{{user.profile_image_url}}"
-                                err-src="https://abs.twimg.com/sticky/default_profile_images/default_profile_6_normal.png"></span>
+                  <img class="avatar"
+                    ng-src="{{user.profile_image_url}}"
+                    err-src="https://abs.twimg.com/sticky/default_profile_images/default_profile_6_normal.png"></span>
                 <span class="tweetauthor-name" ng-bind="user.name"></span>
                 <span class="tweetauthor-screenname">
                   @
@@ -39,7 +51,7 @@
           <p class="tweet-text" ng-bind-html="tweet.text | highlight:vm.activeTerm"></p>
 
           <div class="tweet-metadata">
-            <a href="" class="tweet-timestamp" ng-bind="tweet.created_at | timestamp | date:'medium'"></a>
+            <span class="tweet-timestamp" ng-bind="tweet.created_at | timestamp | date:'medium'"></span>
           </div>
         </div>
       </div>

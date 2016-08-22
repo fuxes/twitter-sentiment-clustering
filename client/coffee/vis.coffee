@@ -12,11 +12,11 @@ Bubbles = () ->
   tweets = null
   margin = {top: 5, right: 0, bottom: 0, left: 0}
   # largest size for our bubbles
-  maxRadius = 65
+  maxRadius = 55
 
   # this scale will be used to size our bubbles
   rScale = d3.scale.sqrt().range([0,maxRadius])
-  
+
   # I've abstracted the data value used to size each
   # into its own function. This should make it easy
   # to switch out the underlying dataset
@@ -30,7 +30,7 @@ Bubbles = () ->
   idValue = (d) -> d.term
 
   # function to define what to display in each bubble
-  #  again, abstracted to ease migration to 
+  #  again, abstracted to ease migration to
   #  a different dataset if desired
   textValue = (d) -> d.term
 
@@ -69,7 +69,7 @@ Bubbles = () ->
   # ---
   tick = (e) ->
     dampenedAlpha = e.alpha * 0.1
-    
+
     # Most of the work is done by the gravity and collide
     # functions.
     node
@@ -95,7 +95,7 @@ Bubbles = () ->
   # ---
   # Creates new chart function. This is the 'constructor' of our
   #  visualization
-  # Check out http://bost.ocks.org/mike/chart/ 
+  # Check out http://bost.ocks.org/mike/chart/
   #  for a explanation and rational behind this function design
   # ---
   chart = (selection) ->
@@ -125,9 +125,9 @@ Bubbles = () ->
         .attr("height", height)
         .on("click", clear)
 
-      # label is the container div for all the labels that sit on top of 
+      # label is the container div for all the labels that sit on top of
       # the bubbles
-      # - remember that we are keeping the labels in plain html and 
+      # - remember that we are keeping the labels in plain html and
       #  the bubbles in svg
       label = d3.select(this).selectAll("#bubble-labels").data([data])
         .enter()
@@ -136,7 +136,7 @@ Bubbles = () ->
 
       update()
 
-      # see if url includes an id already 
+      # see if url includes an id already
       hashchange()
 
       # automatically call hashchange when the url has changed
@@ -151,7 +151,7 @@ Bubbles = () ->
     # add a radius to our data nodes that will serve to determine
     # when a collision has occurred. This uses the same scale as
     # the one used to size our bubbles, but it kicks up the minimum
-    # size to make it so smaller bubbles have a slightly larger 
+    # size to make it so smaller bubbles have a slightly larger
     # collision 'sphere'
     data.forEach (d,i) ->
       d.forceR = Math.max(minCollisionRadius, rScale(rValue(d)))
@@ -173,7 +173,7 @@ Bubbles = () ->
     # idValue returns
     node = node.selectAll(".bubble-node").data(data, (d) -> idValue(d))
 
-    # we don't actually remove any nodes from our data in this example 
+    # we don't actually remove any nodes from our data in this example
     # but if we did, this line of code would remove them from the
     # visualization as well
     node.exit().remove()
@@ -198,14 +198,14 @@ Bubbles = () ->
   # to work well with the font size
   # ---
   updateLabels = () ->
-    # as in updateNodes, we use idValue to define what the unique id for each data 
+    # as in updateNodes, we use idValue to define what the unique id for each data
     # point is
     label = label.selectAll(".bubble-label").data(data, (d) -> idValue(d))
 
     label.exit().remove()
 
     # labels are anchors with div's inside them
-    # labelEnter holds our enter selection so it 
+    # labelEnter holds our enter selection so it
     # is easier to append multiple elements to this selection
     labelEnter = label.enter().append("a")
       .attr("class", "bubble-label")
@@ -223,11 +223,11 @@ Bubbles = () ->
 
     # label font size is determined based on the size of the bubble
     # this sizing allows for a bit of overhang outside of the bubble
-    # - remember to add the 'px' at the end as we are dealing with 
+    # - remember to add the 'px' at the end as we are dealing with
     #  styling divs
     label
-      .style("font-size", (d) -> Math.max(8, rScale(rValue(d) / 2)) + "px")
-      .style("width", (d) -> 2.5 * rScale(rValue(d)) + "px")
+      .style("font-size", (d) -> Math.max(12, rScale(rValue(d) / 3.5) - (d.term.length - 7)) + "px")
+      .style("width", (d) ->  rScale(rValue(d)) + "px")
 
     # interesting hack to get the 'true' text width
     # - create a span inside the label
@@ -244,8 +244,8 @@ Bubbles = () ->
     # reset the width of the label to the actual width
     label
       .style("width", (d) -> d.dx + "px")
-  
-    # compute and store each nodes 'dy' value - the 
+
+    # compute and store each nodes 'dy' value - the
     # amount to shift the label down
     # 'this' inside of D3's each refers to the actual DOM element
     # connected to the data node
@@ -290,7 +290,7 @@ Bubbles = () ->
           y = d.y - d2.y
           distance = Math.sqrt(x * x + y * y)
           # find current minimum space between two nodes
-          # using the forceR that was set to match the 
+          # using the forceR that was set to match the
           # visible radius of the nodes
           minDistance = d.forceR + d2.forceR + collisionPadding
 
@@ -314,7 +314,6 @@ Bubbles = () ->
     d.on("click", click)
     d.on("mouseover", mouseover)
     d.on("mouseout", mouseout)
-    d.on("tweet", (e) -> console.log("Ewqkewqkepwq", e))
 
   # ---
   # clears currently selected bubble
@@ -329,6 +328,7 @@ Bubbles = () ->
     evt = new Event('tweet')
     window.tweets = d.tweets
     window.bubbleClickEvent(d);
+    updateActive(d.term);
     # location.replace("#" + encodeURIComponent(idValue(d)))
     # evt = new CustomEvent("tweetsIdsUpdated", displayTweets(d.tweets))
     # displayTweets(d.tweets)
@@ -347,10 +347,10 @@ Bubbles = () ->
   updateActive = (id) ->
     node.classed("bubble-selected", (d) -> id == idValue(d))
     # if no node is selected, id will be empty
-    if id.length > 0
-      d3.select("#status").html("<h3>The word <span class=\"active\">#{id}</span> is now active</h3>")
-    else
-      d3.select("#status").html("<h3>No word is active</h3>")
+    # if id.length > 0
+      # d3.select("#status").html("<h3>The word <span class=\"active\">#{id}</span> is now active</h3>")
+    # else
+      # d3.select("#status").html("<h3>No word is active</h3>")
 
   # ---
   # hover event
@@ -400,7 +400,7 @@ Bubbles = () ->
       return rValue
     rValue = _
     chart
-  
+
   # final act of our main function is to
   # return the chart function we have created
   return chart
@@ -414,13 +414,6 @@ root.plotData = (selector, data, plot) ->
   d3.select(selector)
     .datum(data)
     .call(plot)
-
-texts = [
-  {key:"sherlock",file:"top_sherlock.csv",name:"The Adventures of Sherlock Holmes"}
-  {key:"aesop",file:"top_aesop.csv",name:"Aesop's Fables"}
-  {key:"alice",file:"alice.csv",name:"Alice's Adventures in Wonderland"}
-  {key:"gulliver",file:"top_gulliver.csv",name:"Gulliver's Travels"}
-]
 
 # ---
 # jQuery document ready.
@@ -439,11 +432,10 @@ $ ->
   # we are storing the current text in the search component
   # just to make things easy
   key = decodeURIComponent(location.search).replace("?","")
-  text = texts.filter((t) -> t.key == key)[0]
 
   # default to the first text if something gets messed up
-  if !text
-    text = texts[0]
+  if !key
+    key = 0
 
   # select the current text in the drop-down
   $("#text-select").val(key)
@@ -459,25 +451,20 @@ $ ->
   d3.select("#text-select")
     .on "change", (e) ->
       key = $(this).val()
-      # location.replace("#")
-      # location.search = encodeURIComponent(key)
-
-  # set the book title from the text name
-  d3.select("#book-title").html(text.name)
+      location.replace("#")
+      location.search = encodeURIComponent(key)
 
   # load our data
   # $.getJSON('tweets_sent.json', (tweetsList) ->
     # console.log(tweetsList)
     # tweets = tweetsList
-  $.getJSON('clusters_wordcloud.json', (data) ->
-    cluster = data.data[1]
+  $.getJSON('data/bubbles.json', (tweetsList) ->
+    cluster = tweetsList.data[key]
     selected = _.sortBy(cluster.terms, "count")
-    display(selected.reverse().slice(10,50))
+    display(selected.reverse().slice(0,50))
     )
     # )
 
   # d3.csv("data/#{text.file}", display)
 
 ## Normalizar y sacar las stopwords from vis
-# valores accuaracy sentiment
-# 

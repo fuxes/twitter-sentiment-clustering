@@ -1,9 +1,14 @@
 **/*.json
 **/*.txt
 **/*.csv
+**/*.json
 
+**/*.pkl
+**/*.npy
+**/*.out
 
 **/*.pyc
 .DS_Store
 
 **/*.tar.gz
+
